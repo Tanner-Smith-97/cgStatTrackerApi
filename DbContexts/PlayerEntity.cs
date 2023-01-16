@@ -17,5 +17,5 @@ public class PlayerEntity
     [Column("GamesWon")] public int GamesWon { get; set; }
 
     public IEnumerable<DeckEntity> Decks { get; set; } = default!;
-    public IEnumerable<GameEntity> Games { get; set; } = default!;
+    public IEnumerable<GameDetailEntity> Games { get; set; } = default!;
 }
