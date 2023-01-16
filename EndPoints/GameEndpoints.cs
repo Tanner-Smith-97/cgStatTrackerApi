@@ -12,11 +12,11 @@ public class GameEndpoints : IEndpoint
         app.MapPost("/CreateGame", CreateGame);
     }
 
-    public void DefineServices(WebApplicationBuilder builder)
+    public void DefineServices(IServiceCollection services)
     {
-        builder.Services.AddTransient<GameService>();
+        services.AddTransient<GameService>();
         // Move this to Deck Endpoints at somepoint....
-        builder.Services.AddTransient<DeckService>();
+        services.AddTransient<DeckService>();
     }
 
     public IResult CreateGame(GameService gameService, PlayerService playerService, DeckService deckService,

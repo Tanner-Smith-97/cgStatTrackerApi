@@ -26,8 +26,8 @@ public class MmrService
 
         foreach (var deadweight in loserGroup)
         {
-            (int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(loser));
-            (int)EloRating.CalculateEloExchanged((EloRating)winner., new EloRating(loser));
+            // (int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(loser));
+            // (int)EloRating.CalculateEloExchanged((EloRating)winner., new EloRating(loser));
         }
     }
     

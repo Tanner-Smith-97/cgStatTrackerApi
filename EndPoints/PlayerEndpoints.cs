@@ -13,9 +13,9 @@ public class PlayerEndpoints : IEndpoint
         app.MapGet("/GetPlayer/{playerName}", GetPlayer);
     }
 
-    public void DefineServices(WebApplicationBuilder builder)
+    public void DefineServices(IServiceCollection services)
     {
-        builder.Services.AddTransient<PlayerService>();
+        services.AddTransient<PlayerService>();
     }
 
     private IResult GetPlayer(PlayerService player, [FromRoute] string playerName)

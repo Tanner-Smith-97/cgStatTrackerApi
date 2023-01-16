@@ -12,10 +12,10 @@ public class ScryfallEndpoints : IEndpoint
         app.MapGet("/card/image/{cardName}", GetCardImage);
     }
 
-    public void DefineServices(WebApplicationBuilder builder)
+    public void DefineServices(IServiceCollection services)
     {
-        builder.Services.AddScoped<ScryfallService>();
-        builder.Services.AddSingleton<ImageUriCachingService>();
+        services.AddScoped<ScryfallService>();
+        services.AddSingleton<ImageUriCachingService>();
     }
 
     private async Task<IResult> GetCardImage(

@@ -1,15 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Miller.MatchMaking.EloRating;
+using StatTracker;
 using StatTracker.DbContexts;
-using StatTracker.EndPoints;
+using StatTracker.Extensions;
 using StatTracker.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var playerEndpoint = new PlayerEndpoints();
-playerEndpoint.DefineServices(builder);
-var gameEndpoint = new GameEndpoints();
-gameEndpoint.DefineServices(builder);
+builder.Services.AddEndpointDefinitions(typeof(AssemblyMarker));
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
@@ -28,9 +26,6 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 });
 
 var app = builder.Build();
-playerEndpoint.DefineEndpoints(app);
-gameEndpoint.DefineEndpoints(app);
-
 app.UseCors(myAllowSpecificOrigins);
 
 app.MapGet("/", () => "Hello World!");
@@ -41,6 +36,8 @@ app.MapGet("/GetDeck", GetDeck);
 app.MapPost("/MakeDeck", MakeDeck);
 
 app.MapGet("/EloStuff/{winner:int}/{loser:int}", EloStuff);
+
+app.UseEndpointDefinitions();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -59,7 +56,6 @@ IResult MakeDeck(string deckName, MyDbContext context)
     {
         Console.WriteLine(e);
         return Results.Problem("Someone messed up...");
-        throw;
     }
 
     return Results.Ok();
