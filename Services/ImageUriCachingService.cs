@@ -6,8 +6,8 @@ public class ImageUriCachingService
 
     public Uri? Get(string key)
     {
-        return _cache.ContainsKey(key) 
-            ? _cache.Single(x => x.Key == key).Value 
+        return _cache.ContainsKey(key)
+            ? _cache.Single(x => x.Key == key).Value
             : null;
     }
 
