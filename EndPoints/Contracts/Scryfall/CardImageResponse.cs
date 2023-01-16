@@ -4,6 +4,5 @@ namespace StatTracker.EndPoints.Contracts.Scryfall;
 
 public class CardImageResponse
 {
-    [JsonPropertyName("image_uri")]
-    public string ImageUri { get; set; }
+    [JsonPropertyName("image_uri")] public string ImageUri { get; set; }
 }
