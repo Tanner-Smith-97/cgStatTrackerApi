@@ -4,6 +4,7 @@ namespace StatTracker.Services;
 
 public class DeckService
 {
+    private const int DefaultMmr = 1000;
     private readonly StatTrackerDbContext context;
 
     public DeckService(StatTrackerDbContext context)
@@ -15,9 +16,7 @@ public class DeckService
     {
         try
         {
-            var result = context.Decks.First(x =>
-                x.Id == deckId
-            );
+            var result = context.Decks.First(x => x.Id == deckId);
 
             return result;
         }
@@ -26,5 +25,17 @@ public class DeckService
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    public DeckEntity GetDeck(string name)
+    {
+        var result = context.Decks.First(x => x.DeckName == name);
+        return result;
+    }
+
+    public void CreateDeck(string name, int playerId)
+    {
+        context.Decks.Add(new DeckEntity { DeckName = name, PlayerId = playerId, Mmr = DefaultMmr });
+        context.SaveChanges();
     }
 }
