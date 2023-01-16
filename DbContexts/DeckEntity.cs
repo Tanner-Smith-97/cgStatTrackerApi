@@ -17,7 +17,8 @@ public class DeckEntity
     [Column("GamesPlayed")] public int GamesPlayed { get; set; }
 
     [Column("GamesWon")] public int GamesWon { get; set; }
-
+    [Column("ImageUrl")] public string? ImageUrl { get; set; }
+    [Column("DeckUrl")] public string? DeckUrl { get; set; }
     public PlayerEntity Player { get; set; } = default!;
-    public IEnumerable<GameEntity> Games { get; set; } = default!;
+    public IEnumerable<GameDetailEntity> Games { get; set; } = default!;
 }

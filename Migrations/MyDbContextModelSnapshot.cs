@@ -31,6 +31,10 @@ namespace StatTracker.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("DeckName");
 
+                    b.Property<string>("DeckUrl")
+                        .HasColumnType("longtext")
+                        .HasColumnName("DeckUrl");
+
                     b.Property<int>("GamesPlayed")
                         .HasColumnType("int")
                         .HasColumnName("GamesPlayed");
@@ -38,6 +42,10 @@ namespace StatTracker.Migrations
                     b.Property<int>("GamesWon")
                         .HasColumnType("int")
                         .HasColumnName("GamesWon");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("longtext")
+                        .HasColumnName("ImageUrl");
 
                     b.Property<int>("Mmr")
                         .HasColumnType("int")
@@ -54,10 +62,10 @@ namespace StatTracker.Migrations
                     b.ToTable("Decks");
                 });
 
-            modelBuilder.Entity("StatTracker.DbContexts.GameEntity", b =>
+            modelBuilder.Entity("StatTracker.DbContexts.GameDetailEntity", b =>
                 {
-                    b.Property<int>("GameId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("char(36)")
                         .HasColumnName("GameId");
 
                     b.Property<int>("PlayerId")
@@ -89,6 +97,22 @@ namespace StatTracker.Migrations
                     b.HasIndex("DeckId");
 
                     b.HasIndex("PlayerId");
+
+                    b.ToTable("GamesDetails");
+                });
+
+            modelBuilder.Entity("StatTracker.DbContexts.GameEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)")
+                        .HasColumnName("Id");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("Date");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Games");
                 });
@@ -133,11 +157,17 @@ namespace StatTracker.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("StatTracker.DbContexts.GameEntity", b =>
+            modelBuilder.Entity("StatTracker.DbContexts.GameDetailEntity", b =>
                 {
                     b.HasOne("StatTracker.DbContexts.DeckEntity", "Deck")
                         .WithMany("Games")
                         .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StatTracker.DbContexts.GameEntity", "Game")
+                        .WithMany("GameDetail")
+                        .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -149,12 +179,19 @@ namespace StatTracker.Migrations
 
                     b.Navigation("Deck");
 
+                    b.Navigation("Game");
+
                     b.Navigation("Player");
                 });
 
             modelBuilder.Entity("StatTracker.DbContexts.DeckEntity", b =>
                 {
                     b.Navigation("Games");
+                });
+
+            modelBuilder.Entity("StatTracker.DbContexts.GameEntity", b =>
+                {
+                    b.Navigation("GameDetail");
                 });
 
             modelBuilder.Entity("StatTracker.DbContexts.PlayerEntity", b =>
