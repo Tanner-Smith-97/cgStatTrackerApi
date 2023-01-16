@@ -12,9 +12,10 @@ public class ScryfallService
     {
         var response = await SCRYFALL_ROOT_URI
            .AppendPathSegment("cards")
+           .AppendPathSegment("named")
            .SetQueryParam("fuzzy", cardName)
            .GetJsonAsync<ScryfallCardResponse>();
-
+        
         return response;
     }
 }
