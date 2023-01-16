@@ -40,7 +40,7 @@ app.MapGet("/TestData", DoStuff);
 app.MapGet("/GetDeck", GetDeck);
 app.MapPost("/MakeDeck", MakeDeck);
 
-app.MapGet("/EloStuff/{winner}/{losser}", EloStuff);
+app.MapGet("/EloStuff/{winner:int}/{loser:int}", EloStuff);
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -82,9 +82,9 @@ IResult GetDeck(string deckName, MyDbContext context)
     }
 }
 
-IResult EloStuff(int winner, int losser)
+IResult EloStuff(int winner, int loser)
 {
-    return Results.Ok((int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(losser)));
+    return Results.Ok((int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(loser)));
 }
 
 IResult DoStuff()

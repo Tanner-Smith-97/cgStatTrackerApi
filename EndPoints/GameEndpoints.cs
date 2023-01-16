@@ -27,8 +27,8 @@ public class GameEndpoints : IEndpoint
             var player = playerService.GetPlayer(gameRequest.PlayerId);
             var deck = deckService.GetDeck(gameRequest.DeckId);
             var result = gameService.CreateGame(gameRequest, player.Mmr, deck.Mmr);
-            gameService.AddDeckGamePlayed(deck.Id);
-            gameService.AddPlayerGamePlayed(player.Id);
+            gameService.AddDeckGamePlayed(deck.Id, gameRequest.Placement);
+            gameService.AddPlayerGamePlayed(player.Id, gameRequest.Placement);
         }
 
         return Results.Ok("sure");

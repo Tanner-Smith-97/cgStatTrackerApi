@@ -16,6 +16,11 @@ public class GameService
         this.deckService = deckService;
     }
 
+    public void SaveChanges()
+    {
+        context.SaveChanges();
+    }
+
     public bool CreateGame(CreateGameRequest request, int playerMmr, int deckMmr)
     {
         try
@@ -25,7 +30,6 @@ public class GameService
                 PlayerId = request.PlayerId, DeckId = request.DeckId, Date = request.DatePlayed,
                 Placement = request.Placement, PlayerMmr = playerMmr, DeckMmr = deckMmr
             });
-            context.SaveChanges();
             return true;
         }
         catch (Exception e)
@@ -35,17 +39,23 @@ public class GameService
         }
     }
 
-    public void AddPlayerGamePlayed(int playerId)
+    public void AddPlayerGamePlayed(int playerId, int placement)
     {
         var player = this.playerService.GetPlayer(playerId);
         player.GamesPlayed += 1;
-        context.SaveChanges();
+        if (placement == 1)
+        {
+            player.GamesWon += 1;
+        }
     }
 
-    public void AddDeckGamePlayed(int deckId)
+    public void AddDeckGamePlayed(int deckId, int placement)
     {
         var deck = this.deckService.GetDeck(deckId);
         deck.GamesPlayed += 1;
-        context.SaveChanges();
+        if (placement == 1)
+        {
+            deck.GamesWon += 1;
+        }
     }
 }
