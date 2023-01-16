@@ -16,11 +16,6 @@ public class GameService
         this.deckService = deckService;
     }
 
-    public void SaveChanges()
-    {
-        context.SaveChanges();
-    }
-
     public bool CreateGame(CreateGameRequest request, int playerMmr, int deckMmr)
     {
         try

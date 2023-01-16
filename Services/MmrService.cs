@@ -1,6 +1,7 @@
 ﻿using Miller.MatchMaking.EloRating;
 using StatTracker.DbContexts;
 using StatTracker.EndPoints.Contracts.Game;
+using StatTracker.Models;
 
 namespace StatTracker.Services;
 
@@ -18,17 +19,31 @@ public class MmrService
     }
 
 
-    public void CalculateMmrChanges(List<CreateGameRequest> request)
+    public void CalculateMmrChanges(List<GameParticipantDto> participants)
     {
-        var winner = request.Single(x => x.Placement == 1);
-        var loserGroup = request.Where(x => x.Placement != 1);
-        var winnerMmrChange = 0;
+        var winner = participants.Single(x => x.Placement == 1);
+        var loserGroup = participants.Where(x => x.Placement != 1);
+        var winnerPlayerMmrDelta = 0;
+        var winnerDeckMmrDelta = 0;
 
         foreach (var deadweight in loserGroup)
         {
-            // (int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(loser));
-            // (int)EloRating.CalculateEloExchanged((EloRating)winner., new EloRating(loser));
+            var playerEloDelta = EloRating.CalculateEloExchanged(
+                (EloRating)winner.Player.Mmr,
+                (EloRating)deadweight.Player.Mmr);
+            
+            var deckEloDelta = EloRating.CalculateEloExchanged(
+                            (EloRating)winner.Player.Mmr,
+                            (EloRating)deadweight.Player.Mmr);
+
+            winnerPlayerMmrDelta += playerEloDelta;
+            winnerDeckMmrDelta += deckEloDelta;
+
+            deadweight.Player.Mmr -= playerEloDelta;
+            deadweight.Deck.Mmr -= playerEloDelta;
         }
+
+        winner.Player.Mmr += winnerPlayerMmrDelta;
+        winner.Deck.Mmr += winnerDeckMmrDelta;
     }
-    
 }
