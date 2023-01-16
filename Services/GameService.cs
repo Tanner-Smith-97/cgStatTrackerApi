@@ -6,8 +6,8 @@ namespace StatTracker.Services;
 public class GameService
 {
     private readonly StatTrackerDbContext context;
-    private readonly PlayerService playerService;
     private readonly DeckService deckService;
+    private readonly PlayerService playerService;
 
     public GameService(StatTrackerDbContext context, PlayerService playerService, DeckService deckService)
     {
@@ -16,14 +16,19 @@ public class GameService
         this.deckService = deckService;
     }
 
-    public bool CreateGame(CreateGameRequest request, int playerMmr, int deckMmr)
+    public bool CreateGame(CreateGameRequest request, int playerMmr, int deckMmr, Guid gameId)
     {
         try
         {
-            context.Games.Add(new GameEntity
+            context.Games.Add(new GameDetailEntity
             {
-                PlayerId = request.PlayerId, DeckId = request.DeckId, Date = request.DatePlayed,
-                Placement = request.Placement, PlayerMmr = playerMmr, DeckMmr = deckMmr
+                GameId = gameId,
+                PlayerId = request.PlayerId,
+                DeckId = request.DeckId,
+                Date = request.DatePlayed,
+                Placement = request.Placement,
+                PlayerMmr = playerMmr,
+                DeckMmr = deckMmr
             });
             return true;
         }
@@ -34,23 +39,26 @@ public class GameService
         }
     }
 
+    public IEnumerable<GameDetailEntity> GetPreviousGames(int numberOfGames)
+    {
+        var gameList = context.Games.OrderByDescending(x => x.Date)
+            .GroupBy(x => x.GameId)
+            .Take(numberOfGames)
+            .SelectMany(x => x);
+        return gameList;
+    }
+
     public void AddPlayerGamePlayed(int playerId, int placement)
     {
-        var player = this.playerService.GetPlayer(playerId);
+        var player = playerService.GetPlayer(playerId);
         player.GamesPlayed += 1;
-        if (placement == 1)
-        {
-            player.GamesWon += 1;
-        }
+        if (placement == 1) player.GamesWon += 1;
     }
 
     public void AddDeckGamePlayed(int deckId, int placement)
     {
-        var deck = this.deckService.GetDeck(deckId);
+        var deck = deckService.GetDeck(deckId);
         deck.GamesPlayed += 1;
-        if (placement == 1)
-        {
-            deck.GamesWon += 1;
-        }
+        if (placement == 1) deck.GamesWon += 1;
     }
 }

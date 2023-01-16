@@ -12,14 +12,19 @@ public class GameEndpoints : IEndpoint
     public void DefineEndpoints(WebApplication app)
     {
         app.MapPost("/CreateGame", CreateGame);
+        app.MapGet("/GetPreviousGames/{numberOfGames:int}", GetNumberOfGames);
     }
 
     public void DefineServices(IServiceCollection services)
     {
         services.AddScoped<GameService>();
-        // Move this to Deck Endpoints at somepoint....
-        services.AddScoped<DeckService>();
         services.AddScoped<MmrService>();
+    }
+
+    public IResult GetNumberOfGames(int numberOfGames, GameService gameService)
+    {
+        var gameList = gameService.GetPreviousGames(numberOfGames);
+        return Results.Ok(gameList);
     }
 
     public IResult CreateGame(
@@ -31,26 +36,28 @@ public class GameEndpoints : IEndpoint
         [FromBody] List<CreateGameRequest> gameRequestList)
     {
         var participants = new List<GameParticipantDto>();
-        
+
+        var gameId = Guid.NewGuid();
+
         foreach (var gameRequest in gameRequestList)
         {
             var player = playerService.GetPlayer(gameRequest.PlayerId);
             var deck = deckService.GetDeck(gameRequest.DeckId);
 
-            participants.Add(new GameParticipantDto()
+            participants.Add(new GameParticipantDto
             {
                 Player = player,
                 Deck = deck,
                 Placement = gameRequest.Placement
             });
-            
-            var result = gameService.CreateGame(gameRequest, player.Mmr, deck.Mmr);
+
+            var result = gameService.CreateGame(gameRequest, player.Mmr, deck.Mmr, gameId);
             gameService.AddDeckGamePlayed(deck.Id, gameRequest.Placement);
             gameService.AddPlayerGamePlayed(player.Id, gameRequest.Placement);
         }
-        
+
         mmrService.CalculateMmrChanges(participants);
-        
+
         dbContext.SaveChanges();
 
         return Results.Ok("sure");
