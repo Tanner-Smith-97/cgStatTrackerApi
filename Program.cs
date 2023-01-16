@@ -10,9 +10,9 @@ builder.Services.AddEndpointDefinitions(typeof(AssemblyMarker));
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy => policy
-       .AllowAnyHeader()
-       .AllowAnyMethod()
-       .AllowAnyOrigin());
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowAnyOrigin());
 });
 
 builder.Services.AddEndpointsApiExplorer();

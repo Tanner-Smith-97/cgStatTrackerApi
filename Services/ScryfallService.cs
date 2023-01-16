@@ -11,44 +11,35 @@ public class ScryfallService
     public async Task<ScryfallCardResponse> GetScryfallCardByName(string cardName)
     {
         var response = await SCRYFALL_ROOT_URI
-           .AppendPathSegment("cards")
-           .AppendPathSegment("named")
-           .SetQueryParam("fuzzy", cardName)
-           .GetJsonAsync<ScryfallCardResponse>();
-        
+            .AppendPathSegment("cards")
+            .AppendPathSegment("named")
+            .SetQueryParam("fuzzy", cardName)
+            .GetJsonAsync<ScryfallCardResponse>();
+
         return response;
     }
 }
 
 public class ScryfallCardResponse
 {
-    [JsonPropertyName("id")]
-    public Guid Id { get; set; }
-    
-    [JsonPropertyName("object")]
-    public string Object { get; set; }
+    [JsonPropertyName("id")] public Guid Id { get; set; }
 
-    [JsonPropertyName("image_uris")]
-    public ScryfallImageResponse ImageUris { get; set; }
+    [JsonPropertyName("object")] public string Object { get; set; }
+
+    [JsonPropertyName("image_uris")] public ScryfallImageResponse ImageUris { get; set; }
 }
 
 public class ScryfallImageResponse
 {
-    [JsonPropertyName("small")]
-    public string Small { get; set; }
-    
-    [JsonPropertyName("normal")]
-    public string Normal { get; set; }
-    
-    [JsonPropertyName("large")]
-    public string Large { get; set; }
-    
-    [JsonPropertyName("png")]
-    public string Png { get; set; }
-    
-    [JsonPropertyName("art_crop")]
-    public string ArtCrop { get; set; }
-    
-    [JsonPropertyName("border_crop")]
-    public string BoarderCrop { get; set; }
+    [JsonPropertyName("small")] public string Small { get; set; }
+
+    [JsonPropertyName("normal")] public string Normal { get; set; }
+
+    [JsonPropertyName("large")] public string Large { get; set; }
+
+    [JsonPropertyName("png")] public string Png { get; set; }
+
+    [JsonPropertyName("art_crop")] public string ArtCrop { get; set; }
+
+    [JsonPropertyName("border_crop")] public string BoarderCrop { get; set; }
 }

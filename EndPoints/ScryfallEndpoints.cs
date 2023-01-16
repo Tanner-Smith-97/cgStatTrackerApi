@@ -28,16 +28,16 @@ public class ScryfallEndpoints : IEndpoint
         {
             // If the image exists for that name then just return that
             var uri = cachingService.Get(cardName);
-            return Results.Ok(new CardImageResponse()
+            return Results.Ok(new CardImageResponse
             {
                 ImageUri = uri!.ToString()
             });
         }
-        
+
         // No image exists in cache add it to the cache and then return
         var cardResponse = await scryfall.GetScryfallCardByName(cardName);
         cachingService.Set(cardName, new Uri(cardResponse.ImageUris.ArtCrop));
-        return Results.Ok(new CardImageResponse()
+        return Results.Ok(new CardImageResponse
         {
             ImageUri = cardResponse.ImageUris.ArtCrop
         });
