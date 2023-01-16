@@ -9,7 +9,6 @@ public class MiscEndpoints : IEndpoint
 {
     public void DefineServices(IServiceCollection services)
     {
-        
     }
 
     public void DefineEndpoints(WebApplication app)
@@ -23,9 +22,9 @@ public class MiscEndpoints : IEndpoint
 
         app.MapGet("/EloStuff/{winner:int}/{loser:int}", EloStuff);
     }
-    
-    
-    IResult MakeDeck(string deckName, StatTrackerDbContext context)
+
+
+    private IResult MakeDeck(string deckName, StatTrackerDbContext context)
     {
         try
         {
@@ -42,7 +41,7 @@ public class MiscEndpoints : IEndpoint
         return Results.Ok();
     }
 
-    IResult GetDeck(string deckName, StatTrackerDbContext context)
+    private IResult GetDeck(string deckName, StatTrackerDbContext context)
     {
         try
         {
@@ -59,12 +58,12 @@ public class MiscEndpoints : IEndpoint
         }
     }
 
-    IResult EloStuff(int winner, int loser)
+    private IResult EloStuff(int winner, int loser)
     {
         return Results.Ok((int)EloRating.CalculateEloExchanged(new EloRating(winner), new EloRating(loser)));
     }
 
-    IResult DoStuff()
+    private IResult DoStuff()
     {
         var data = new List<TestData>();
         data.Add(new TestData("Anje Falkenrath", false, "1000"));
