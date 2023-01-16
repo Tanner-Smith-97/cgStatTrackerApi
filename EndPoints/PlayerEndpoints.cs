@@ -15,7 +15,7 @@ public class PlayerEndpoints : IEndpoint
 
     public void DefineServices(IServiceCollection services)
     {
-        services.AddTransient<PlayerService>();
+        services.AddScoped<PlayerService>();
     }
 
     private IResult GetPlayer(PlayerService player, [FromRoute] string playerName)

@@ -16,9 +16,10 @@ public class GameEndpoints : IEndpoint
 
     public void DefineServices(IServiceCollection services)
     {
-        services.AddTransient<GameService>();
+        services.AddScoped<GameService>();
         // Move this to Deck Endpoints at somepoint....
-        services.AddTransient<DeckService>();
+        services.AddScoped<DeckService>();
+        services.AddScoped<MmrService>();
     }
 
     public IResult CreateGame(
