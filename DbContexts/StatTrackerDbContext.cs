@@ -2,9 +2,9 @@
 
 namespace StatTracker.DbContexts;
 
-public class MyDbContext : DbContext
+public class StatTrackerDbContext : DbContext
 {
-    public MyDbContext(DbContextOptions<MyDbContext> context) : base(context)
+    public StatTrackerDbContext(DbContextOptions<StatTrackerDbContext> context) : base(context)
     {
     }
 

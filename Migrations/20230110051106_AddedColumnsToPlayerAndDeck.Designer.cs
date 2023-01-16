@@ -10,7 +10,7 @@ using StatTracker.DbContexts;
 
 namespace StatTracker.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(StatTrackerDbContext))]
     [Migration("20230110051106_AddedColumnsToPlayerAndDeck")]
     partial class AddedColumnsToPlayerAndDeck
     {

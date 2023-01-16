@@ -26,7 +26,7 @@ public class GameEndpoints : IEndpoint
         PlayerService playerService,
         DeckService deckService,
         MmrService mmrService,
-        MyDbContext dbContext,
+        StatTrackerDbContext dbContext,
         [FromBody] List<CreateGameRequest> gameRequestList)
     {
         var participants = new List<GameParticipantDto>();

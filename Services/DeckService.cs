@@ -4,9 +4,9 @@ namespace StatTracker.Services;
 
 public class DeckService
 {
-    private readonly MyDbContext context;
+    private readonly StatTrackerDbContext context;
 
-    public DeckService(MyDbContext context)
+    public DeckService(StatTrackerDbContext context)
     {
         this.context = context;
     }

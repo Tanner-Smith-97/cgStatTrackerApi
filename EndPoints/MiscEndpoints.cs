@@ -25,7 +25,7 @@ public class MiscEndpoints : IEndpoint
     }
     
     
-    IResult MakeDeck(string deckName, MyDbContext context)
+    IResult MakeDeck(string deckName, StatTrackerDbContext context)
     {
         try
         {
@@ -42,7 +42,7 @@ public class MiscEndpoints : IEndpoint
         return Results.Ok();
     }
 
-    IResult GetDeck(string deckName, MyDbContext context)
+    IResult GetDeck(string deckName, StatTrackerDbContext context)
     {
         try
         {

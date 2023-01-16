@@ -5,11 +5,11 @@ namespace StatTracker.Services;
 
 public class GameService
 {
-    private readonly MyDbContext context;
+    private readonly StatTrackerDbContext context;
     private readonly PlayerService playerService;
     private readonly DeckService deckService;
 
-    public GameService(MyDbContext context, PlayerService playerService, DeckService deckService)
+    public GameService(StatTrackerDbContext context, PlayerService playerService, DeckService deckService)
     {
         this.context = context;
         this.playerService = playerService;

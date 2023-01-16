@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MyDbContext>(options =>
+builder.Services.AddDbContext<StatTrackerDbContext>(options =>
 {
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 31));
     options.UseMySql("Server=localhost;Database=StatTrackerDB; Uid=root; Pwd=MTNspark33!;", serverVersion);

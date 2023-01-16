@@ -7,11 +7,11 @@ namespace StatTracker.Services;
 
 public class MmrService
 {
-    private readonly MyDbContext context;
+    private readonly StatTrackerDbContext context;
     private readonly PlayerService playerService;
     private readonly DeckService deckService;
 
-    public MmrService(MyDbContext context, PlayerService playerService, DeckService deckService)
+    public MmrService(StatTrackerDbContext context, PlayerService playerService, DeckService deckService)
     {
         this.context = context;
         this.playerService = playerService;

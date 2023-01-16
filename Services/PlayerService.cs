@@ -6,9 +6,9 @@ namespace StatTracker.Services;
 public class PlayerService
 {
     private const int DefaultMmr = 1000;
-    private readonly MyDbContext context;
+    private readonly StatTrackerDbContext context;
 
-    public PlayerService(MyDbContext context)
+    public PlayerService(StatTrackerDbContext context)
     {
         this.context = context;
     }

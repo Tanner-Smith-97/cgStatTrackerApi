@@ -9,7 +9,7 @@ using StatTracker.DbContexts;
 
 namespace StatTracker.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(StatTrackerDbContext))]
     [Migration("20230109044637_AddedDecksAndPlayers")]
     partial class AddedDecksAndPlayers
     {

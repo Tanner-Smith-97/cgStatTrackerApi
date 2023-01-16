@@ -9,7 +9,7 @@ using StatTracker.DbContexts;
 
 namespace StatTracker.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
+    [DbContext(typeof(StatTrackerDbContext))]
     partial class MyDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
