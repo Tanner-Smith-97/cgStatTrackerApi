@@ -1,6 +1,5 @@
 ﻿using Miller.MatchMaking.EloRating;
 using StatTracker.DbContexts;
-using StatTracker.EndPoints.Contracts.Game;
 using StatTracker.Models;
 
 namespace StatTracker.Services;
@@ -8,8 +7,8 @@ namespace StatTracker.Services;
 public class MmrService
 {
     private readonly StatTrackerDbContext context;
-    private readonly PlayerService playerService;
     private readonly DeckService deckService;
+    private readonly PlayerService playerService;
 
     public MmrService(StatTrackerDbContext context, PlayerService playerService, DeckService deckService)
     {
@@ -31,10 +30,10 @@ public class MmrService
             var playerEloDelta = EloRating.CalculateEloExchanged(
                 (EloRating)winner.Player.Mmr,
                 (EloRating)deadweight.Player.Mmr);
-            
+
             var deckEloDelta = EloRating.CalculateEloExchanged(
-                            (EloRating)winner.Player.Mmr,
-                            (EloRating)deadweight.Player.Mmr);
+                (EloRating)winner.Player.Mmr,
+                (EloRating)deadweight.Player.Mmr);
 
             winnerPlayerMmrDelta += playerEloDelta;
             winnerDeckMmrDelta += deckEloDelta;
