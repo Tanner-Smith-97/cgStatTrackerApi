@@ -72,10 +72,6 @@ namespace StatTracker.Migrations
                         .HasColumnType("int")
                         .HasColumnName("PlayerId");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("Date");
-
                     b.Property<int>("DeckId")
                         .HasColumnType("int")
                         .HasColumnName("DeckId");

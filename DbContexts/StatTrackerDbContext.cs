@@ -10,7 +10,8 @@ public class StatTrackerDbContext : DbContext
 
     public DbSet<DeckEntity> Decks { get; set; } = default!;
     public DbSet<PlayerEntity> Players { get; set; } = default!;
-    public DbSet<GameDetailEntity> Games { get; set; } = default!;
+    public DbSet<GameDetailEntity> GameDetails { get; set; } = default!;
+    public DbSet<GameEntity> Games { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

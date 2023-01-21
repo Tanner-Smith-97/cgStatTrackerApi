@@ -11,8 +11,6 @@ public class GameDetailEntity
 
     [Column("DeckId")] public int DeckId { get; set; }
 
-    [Column("Date")] public DateTime Date { get; set; }
-
     [Column("PlayerMmr")] public int PlayerMmr { get; set; }
 
     [Column("DeckMmr")] public int DeckMmr { get; set; }
