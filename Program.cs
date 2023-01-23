@@ -2,10 +2,17 @@ using Microsoft.EntityFrameworkCore;
 using StatTracker;
 using StatTracker.DbContexts;
 using StatTracker.Extensions;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointDefinitions(typeof(AssemblyMarker));
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddCors(options =>
 {

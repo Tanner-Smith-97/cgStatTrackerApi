@@ -24,7 +24,9 @@ public class GameEndpoints : IEndpoint
     public IResult GetNumberOfGames(int numberOfGames, GameService gameService)
     {
         var gameList = gameService.GetPreviousGames(numberOfGames);
-        return Results.Ok(gameList);
+        var gameEntities = gameList.ToList();
+        var gameDetails = gameService.GetPreviousGameDetails(gameEntities);
+        return Results.Ok(gameDetails);
     }
 
     public IResult CreateGame(
@@ -33,27 +35,28 @@ public class GameEndpoints : IEndpoint
         DeckService deckService,
         MmrService mmrService,
         StatTrackerDbContext dbContext,
-        [FromBody] List<CreateGameRequest> gameRequestList)
+        [FromBody] CreateGameRequest gameRequest)
     {
         var participants = new List<GameParticipantDto>();
 
-        var gameId = Guid.NewGuid();
-
-        foreach (var gameRequest in gameRequestList)
+        // var gameId = Guid.NewGuid();
+        var gameId = gameService.CreateGame(gameRequest.DatePlayed);
+        
+        foreach (var gameDetail in gameRequest.GameDetailsList)
         {
-            var player = playerService.GetPlayer(gameRequest.PlayerId);
-            var deck = deckService.GetDeck(gameRequest.DeckId);
+            var player = playerService.GetPlayer(gameDetail.PlayerId);
+            var deck = deckService.GetDeck(gameDetail.DeckId);
 
             participants.Add(new GameParticipantDto
             {
                 Player = player,
                 Deck = deck,
-                Placement = gameRequest.Placement
+                Placement = gameDetail.Placement
             });
 
-            var result = gameService.CreateGame(gameRequest, player.Mmr, deck.Mmr, gameId);
-            gameService.AddDeckGamePlayed(deck.Id, gameRequest.Placement);
-            gameService.AddPlayerGamePlayed(player.Id, gameRequest.Placement);
+            var result = gameService.AddGameDetails(gameDetail, player.Mmr, deck.Mmr, gameId);
+            gameService.AddDeckGamePlayed(deck.Id, gameDetail.Placement);
+            gameService.AddPlayerGamePlayed(player.Id, gameDetail.Placement);
         }
 
         mmrService.CalculateMmrChanges(participants);
@@ -62,4 +65,9 @@ public class GameEndpoints : IEndpoint
 
         return Results.Ok("sure");
     }
+
+    // public IResult DeleteMostRecentGame()
+    // {
+    //     
+    // }
 }

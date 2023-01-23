@@ -16,16 +16,27 @@ public class GameService
         this.deckService = deckService;
     }
 
-    public bool CreateGame(CreateGameRequest request, int playerMmr, int deckMmr, Guid gameId)
+    public Guid CreateGame(DateTime date)
+    {
+        var gameId = Guid.NewGuid();
+        context.Games.Add(new GameEntity
+        {
+            Id = gameId,
+            Date = date
+        });
+
+        return gameId;
+    }
+
+    public bool AddGameDetails(CreateGameDetails request, int playerMmr, int deckMmr, Guid gameId)
     {
         try
         {
-            context.Games.Add(new GameDetailEntity
+            context.GameDetails.Add(new GameDetailEntity
             {
                 GameId = gameId,
                 PlayerId = request.PlayerId,
                 DeckId = request.DeckId,
-                Date = request.DatePlayed,
                 Placement = request.Placement,
                 PlayerMmr = playerMmr,
                 DeckMmr = deckMmr
@@ -39,13 +50,16 @@ public class GameService
         }
     }
 
-    public IEnumerable<GameDetailEntity> GetPreviousGames(int numberOfGames)
+    public IEnumerable<GameEntity> GetPreviousGames(int numberOfGames)
     {
-        var gameList = context.Games.OrderByDescending(x => x.Date)
-            .GroupBy(x => x.GameId)
-            .Take(numberOfGames)
-            .SelectMany(x => x);
+        var gameList = context.Games.OrderByDescending(x => x.Date).Take(numberOfGames);
         return gameList;
+    }
+
+    public IEnumerable<GameDetailEntity> GetPreviousGameDetails(IEnumerable<GameEntity> gamesList)
+    {
+        var gameIds = gamesList.Select(x => x.Id);
+        return context.GameDetails.Where(x =>  gameIds.Contains(x.GameId));
     }
 
     public void AddPlayerGamePlayed(int playerId, int placement)
