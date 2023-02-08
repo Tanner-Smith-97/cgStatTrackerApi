@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using StatTracker.DbContexts;
 using StatTracker.EndPoints.Contracts.Player;
 using StatTracker.Interfaces;
 using StatTracker.Services;
@@ -11,6 +12,8 @@ public class PlayerEndpoints : IEndpoint
     {
         app.MapPost("/CreatePlayer", CreatePlayer);
         app.MapGet("/GetPlayer/{playerName}", GetPlayer);
+        app.MapGet("players", GetPlayers)
+            .Produces<IEnumerable<PlayerEntity>>();
     }
 
     public void DefineServices(IServiceCollection services)
@@ -28,5 +31,11 @@ public class PlayerEndpoints : IEndpoint
     {
         var result = player.CreatePlayer(request);
         return result ? Results.StatusCode(201) : Results.Problem("Something went wrong");
+    }
+
+    private IResult GetPlayers(PlayerService playerService)
+    {
+        var result = playerService.GetPlayers();
+        return Results.Ok(result);
     }
 }

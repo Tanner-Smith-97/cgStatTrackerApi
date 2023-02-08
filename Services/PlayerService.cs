@@ -28,6 +28,11 @@ public class PlayerService
         }
     }
 
+    public IEnumerable<PlayerEntity> GetPlayers()
+    {
+        return context.Players;
+    }
+
     public PlayerEntity GetPlayer(string playerName)
     {
         try
