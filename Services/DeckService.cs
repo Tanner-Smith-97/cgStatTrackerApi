@@ -38,4 +38,9 @@ public class DeckService
         context.Decks.Add(new DeckEntity { DeckName = name, PlayerId = playerId, Mmr = DefaultMmr });
         context.SaveChanges();
     }
+
+    public IEnumerable<DeckEntity> GetDecks()
+    {
+        return context.Decks;
+    }
 }

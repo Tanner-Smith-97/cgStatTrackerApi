@@ -1,4 +1,5 @@
-﻿using StatTracker.Interfaces;
+﻿using StatTracker.DbContexts;
+using StatTracker.Interfaces;
 using StatTracker.Services;
 
 namespace StatTracker.EndPoints;
@@ -15,6 +16,8 @@ public class DeckEndpoints : IEndpoint
         app.MapPost("CreateDeck", CreateDeck);
         app.MapGet("GetDeckByName/{deckName:alpha}", GetDeckByName);
         app.MapGet("GetDeckById/{deckId:int}", GetDeckById);
+        app.MapGet("GetDecks", GetDecks)
+           .Produces<IEnumerable<DeckEntity>>();
     }
 
     private IResult CreateDeck(string deckName, string playerName, PlayerService playerService, DeckService deckService)
@@ -34,5 +37,11 @@ public class DeckEndpoints : IEndpoint
     {
         var deck = deckService.GetDeck(deckId);
         return Results.Ok(deck);
+    }
+
+    private IResult GetDecks(DeckService deckService)
+    {
+        var decks = deckService.GetDecks();
+        return Results.Ok(decks);
     }
 }
