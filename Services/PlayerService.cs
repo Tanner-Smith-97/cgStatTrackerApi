@@ -1,4 +1,5 @@
-﻿using StatTracker.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using StatTracker.DbContexts;
 using StatTracker.EndPoints.Contracts.Player;
 
 namespace StatTracker.Services;
@@ -37,9 +38,12 @@ public class PlayerService
     {
         try
         {
-            var result = context.Players.First(x =>
-                x.Name == playerName
-            );
+            var result = context.Players
+               .Include(x => x.Decks)
+               .Include(x => x.Games)
+               .First(x =>
+                    x.Name == playerName
+                );
 
             return result;
         }
