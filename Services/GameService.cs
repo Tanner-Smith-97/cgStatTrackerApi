@@ -1,4 +1,5 @@
-﻿using StatTracker.DbContexts;
+﻿using Microsoft.EntityFrameworkCore;
+using StatTracker.DbContexts;
 using StatTracker.EndPoints.Contracts.Game;
 
 namespace StatTracker.Services;
@@ -56,10 +57,19 @@ public class GameService
         return gameList;
     }
 
-    public IEnumerable<GameDetailEntity> GetPreviousGameDetails(IEnumerable<GameEntity> gamesList)
+    // public IEnumerable<GameDetailEntity> GetPreviousGameDetails(IEnumerable<GameEntity> gamesList)
+    // {
+    //     var gameIds = gamesList.Select(x => x.Id);
+    //     return context.GameDetails.Where(x =>  gameIds.Contains(x.GameId));
+    // }
+    
+    public IEnumerable<GameEntity> GetPreviousGameDetails(IEnumerable<GameEntity> gamesList)
     {
         var gameIds = gamesList.Select(x => x.Id);
-        return context.GameDetails.Where(x =>  gameIds.Contains(x.GameId));
+
+        return context.Games
+            .Include(g => g.GameDetail)
+            .Where(g => gameIds.Contains(g.Id));
     }
 
     public void AddPlayerGamePlayed(int playerId, int placement)

@@ -38,4 +38,5 @@ public class PlayerEndpoints : IEndpoint
         var result = playerService.GetPlayers();
         return Results.Ok(result);
     }
+    
 }
